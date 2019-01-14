@@ -1,41 +1,39 @@
 <?php
-if(!empty($_GET['page']) and $_GET['page'] == "lesson" and !empty($_GET['class']))
+if(!empty($_GET['page']))
 {
-	//On va chercher le fichier de la page des cours
-	require_once('lesson.php');
+	switch($_GET['page'])
+	{
+		case "lesson" : //On va chercher le fichier de la page des cours
+						require_once('lesson.php');
+						break;
+						
+		case "cours" : //On va chercher le fichier de la page des cours
+						require_once('cours.php');
+						break;
+						
+		case "event" : //On va chercher le fichier de la page des cours
+						require_once('event.php');
+						break;
+						
+		case "exo" : //On va chercher le fichier de la page des cours
+						require_once('exo.php');
+						break;
+						
+		case "admin" : if(!empty($_SESSION['user']) and $_SESSION['lvl_adm'] >= 5)
+						{
+							//On va chercher le fichier de la page des cours
+							require_once('admin.php');
+						}
+						elseif(empty($_SESSION['lvl_adm']) or $_SESSION['lvl_adm'] < 5)
+						{
+							$erreur = "You are not allowed to access the admin page";
+							header("Location: /?erreur={$erreur}"); //On renvoi vers la page d'acceuil
+							exit;
+						}
+						break;
+	}
 }
-
-if(!empty($_GET['page']) and $_GET['page'] == "cours" and !empty($_GET['idcours']))
-{
-	//On va chercher le fichier de la page des cours
-	require_once('cours.php');
-}
-
-if(!empty($_GET['page']) and $_GET['page'] == "event" and !empty($_GET['class']))
-{
-	//On va chercher le fichier de la page des exercices
-	require_once('event.php');
-}
-
-if(!empty($_GET['page']) and $_GET['page'] == "exo" and !empty($_GET['idevent']))
-{
-	//On va chercher le fichier de la page des exercices
-	require_once('exo.php');
-}
-
-if(!empty($_SESSION['user']) and $_SESSION['lvl_adm'] >= 5 and !empty($_GET['page']) and $_GET['page'] == "admin")
-{
-	//On va chercher le fichier de la page admin
-	require_once('admin.php');
-}
-elseif(empty($_SESSION['lvl_adm']) and !empty($_GET['page']) and $_GET['page'] == "admin")
-{
-	$erreur = "You are not allowed to access the admin page";
-	header("Location: /?erreur={$erreur}"); //On renvoi vers la page d'acceuil
-	exit;
-}
-
-if(empty($_GET['page']))
+else
 {
 	?>
 		<article>
